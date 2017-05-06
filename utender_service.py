@@ -1,7 +1,7 @@
  #!/usr/bin/python
  # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from iso8601 import parse_date
 from pytz import timezone
 import urllib
@@ -11,6 +11,11 @@ import os
 def convert_time(date):
     date = datetime.strptime(date, "%d/%m/%Y %H:%M:%S")
     return timezone('Europe/Kiev').localize(date).strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+
+
+def subtract_min_from_date(date, minutes):
+    date_obj = datetime.strptime(date.split("+")[0], '%Y-%m-%dT%H:%M:%S.%f')
+    return "{}+{}".format(date_obj - timedelta(minutes=minutes), date.split("+")[1])
 
 
 def convert_datetime_to_utender_format(isodate):
@@ -44,6 +49,8 @@ def convert_string_from_dict_utender(string):
         u'Ні': False,
         u'на розглядi': u'pending',
         u'На розгляді': u'pending',
+        u'не вирішено(обробляється)': u'pending',
+        u'відмінено': u'cancelled',
         u'відмінена': u'cancelled',
         u'Переможець': u'active',
     }.get(string, string)
@@ -51,7 +58,6 @@ def convert_string_from_dict_utender(string):
 
 def adapt_procuringEntity(role_name, tender_data):
     if role_name == 'tender_owner':
-        ph = tender_data['data']['procuringEntity']['contactPoint']['telephone'][-10:]
         tender_data['data']['procuringEntity']['name'] = u"Ольмек"
         tender_data['data']['procuringEntity']['address']['postalCode'] = u"01100"
         tender_data['data']['procuringEntity']['address']['region'] = u"місто Київ"
@@ -59,8 +65,9 @@ def adapt_procuringEntity(role_name, tender_data):
         tender_data['data']['procuringEntity']['address']['streetAddress'] = u"вул. Фрунзе 77"
         tender_data['data']['procuringEntity']['identifier']['legalName'] = u"Ольмек"
         tender_data['data']['procuringEntity']['identifier']['id'] = u"01234567"
-       # tender_data = adapt_delivery_data(tender_data)
-       # tender_data['data']['procuringEntity']['contactPoint']['telephone'] = "+38({}){}-{}-{}".format(ph[:3], ph[3:6], ph[6:8], ph[8:10])
+        if tender_data['data'].has_key('procurementMethodType'):
+            if "above" in tender_data['data']['procurementMethodType']:
+                tender_data['data']['tenderPeriod']['startDate'] = subtract_min_from_date(tender_data['data']['tenderPeriod']['startDate'], 1)
     return tender_data
 
 
