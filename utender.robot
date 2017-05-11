@@ -566,7 +566,7 @@ Login
   ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/complaints")]
   Wait Until Page Does Not Contain  Специфікація закупівлі
   Дочекатися І Клікнути  xpath=//*[contains(text(),"${complaintID}")]/../descendant::button[@name="complaint_convert_to_claim"]
-  #Sleep  5
+  Sleep  5
 
 Перетворити вимогу про виправлення умов лоту в скаргу
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${escalating_data}
@@ -629,7 +629,7 @@ Login
   ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/complaints")]
   Wait Until Page Does Not Contain  Специфікація закупівлі
   Дочекатися І Клікнути  xpath=//*[contains(text(),"${complaintID}")]/../descendant::button[@name="award_claim_convert_to_pending"]
-  #Sleep  5
+  Sleep  5
 
 ###############################################################################################################
 ###################################    ВІДОБРАЖЕННЯ ІНФОРМАЦІЇ    #############################################
