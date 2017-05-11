@@ -367,7 +367,7 @@ Login
   Дочекатися І Клікнути  name=add_limited_avards
   Capture Page Screenshot
   Wait Until Page Contains Element  xpath=//div[contains(@class, "alert-success")]
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   Choose File  xpath=(//input[@name="FileUpload[file]"])[1]  ${document}
   Дочекатися І Клікнути  xpath=(//input[contains(@id,"qualified")])[1]/..
   Capture Page Screenshot
@@ -430,7 +430,7 @@ Login
 Задати питання
   [Arguments]  ${username}  ${tender_uaid}  ${question}  ${related_to}=False
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href, "/questions")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href, "/questions")]
   Input Text  name=Question[title]  ${question.data.title}
   Input Text  name=Question[description]  ${question.data.description}
   ${label}=  Get Text  xpath=//select[@id="question-questionof"]/option[contains(text(), "${related_to}")]
@@ -441,12 +441,12 @@ Login
 Відповісти на питання
   [Arguments]  ${username}  ${tender_uaid}  ${answer_data}  ${question_id}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href, "/questions")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href, "/questions")]
   Wait Until Element Is Visible  xpath=//*[contains(text(), "${question_id}")]
   Input text  xpath=//*[contains(text(), "${question_id}")]/../descendant::textarea  ${answer_data.data.answer}
   Дочекатися І Клікнути  //*[contains(text(), "${question_id}")]/../descendant::button[@name="answer_question_submit"]
   Wait Until Page Contains  ${answer_data.data.answer}  30
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"/tender/view/")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"/tender/view/")]
 
 Задати запитання на тендер
   [Arguments]  ${username}  ${tender_uaid}  ${question}
@@ -471,7 +471,7 @@ Login
 Створити вимогу про виправлення умов закупівлі
   [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${document}=${None}  ${related_to}=Тендеру
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href, "/complaints")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href, "/complaints")]
   Дочекатися І Клікнути  xpath=//a[contains(@href, "status=claim")]
   ${related_to}=  Get Text  xpath=//select[@name="Complaint[relatedLot]"]/option[contains(text(), "${related_to}")]
   Input Text  name=Complaint[title]  ${claim.data.title}
@@ -494,7 +494,7 @@ Login
 Підтвердити вирішення вимоги про виправлення умов закупівлі
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${confirmation_data}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href, "/complaints")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href, "/complaints")]
   Capture Page Screenshot
   Дочекатися І Клікнути  xpath=//button[@name="complaint_resolved"]
   Capture Page Screenshot
@@ -513,9 +513,9 @@ Login
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${answer_data}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Run Keyword If  "переможця" in "${TEST_NAME}"  Run Keywords
-  ...    Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  ...    Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   ...    AND  Дочекатися І Клікнути  xpath=//*[@class="bidclaims"]/descendant::a[contains(@href,"tender/qualification-complaints")]
-  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/complaints")]
+  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/complaints")]
   Wait Until Page Does Not Contain  Специфікація закупівлі
   Wait Until Keyword Succeeds  10 x  60 s  Run Keywords
   ...  Reload Page
@@ -542,7 +542,7 @@ Login
 Скасувати вимогу про виправлення умов закупівлі
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${cancellation_data}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href, "/complaints")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href, "/complaints")]
   Дочекатися І Клікнути  xpath=//input[@class="cancel_checkbox"]/..
   Ввести Текст  xpath=//*[contains(@name, "[cancellationReason]")]  ${cancellation_data.data.cancellationReason}
   Дочекатися І Клікнути  xpath=//button[@name="complaint_cancelled"]
@@ -561,9 +561,9 @@ Login
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${escalating_data}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Run Keyword If  "переможця" in "${TEST_NAME}"  Run Keywords
-  ...    Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  ...    Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   ...    AND  Дочекатися І Клікнути  xpath=//*[@class="bidclaims"]/descendant::a[contains(@href,"tender/qualification-complaints")]
-  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/complaints")]
+  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/complaints")]
   Wait Until Page Does Not Contain  Специфікація закупівлі
   Дочекатися І Клікнути  xpath=//*[contains(text(),"${complaintID}")]/../descendant::button[@name="complaint_convert_to_claim"]
   #Sleep  5
@@ -575,7 +575,7 @@ Login
 Створити вимогу про виправлення визначення переможця
   [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${award_index}  ${document}=${None}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   Дочекатися І Клікнути  xpath=//a[contains(@href,"tender/qualification")]
   Дочекатися І Клікнути  xpath=//a[contains(@href, "status=claim")]
   Input Text  name=Complaint[title]  ${claim.data.title}
@@ -597,7 +597,7 @@ Login
 Підтвердити вирішення вимоги про виправлення визначення переможця
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${confirmation_data}  ${award_index}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   Дочекатися І Клікнути  xpath=//a[contains(@href,"tender/qualification")]
   Capture Page Screenshot
   Дочекатися І Клікнути  xpath=//button[@name="award_claim_resolved"]
@@ -612,7 +612,7 @@ Login
 Скасувати вимогу про виправлення визначення переможця
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${cancellation_data}  ${award_index}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   Дочекатися І Клікнути  xpath=//a[contains(@href,"tender/qualification")]
   Capture Page Screenshot
   Дочекатися І Клікнути  xpath=//input[@class="cancel_checkbox"]/..
@@ -624,9 +624,9 @@ Login
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${escalating_data}  ${award_index}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Run Keyword If  "переможця" in "${TEST_NAME}"  Run Keywords
-  ...    Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  ...    Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   ...    AND  Дочекатися І Клікнути  xpath=//*[@class="bidclaims"]/descendant::a[contains(@href,"tender/qualification-complaints")]
-  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/complaints")]
+  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/complaints")]
   Wait Until Page Does Not Contain  Специфікація закупівлі
   Дочекатися І Клікнути  xpath=//*[contains(text(),"${complaintID}")]/../descendant::button[@name="award_claim_convert_to_pending"]
   #Sleep  5
@@ -710,7 +710,7 @@ Login
 Отримати інформацію із запитання
   [Arguments]  ${username}  ${tender_uaid}  ${question_id}  ${field_name}
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href, "/questions")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href, "/questions")]
   Wait Until Element Is Not Visible  xpath=//*[@tid="items.description"]
   Wait Until Keyword Succeeds  5 x  60 s  Run Keywords
   ...  Reload Page
@@ -722,9 +722,9 @@ Login
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${field_name}  ${award_index}=${None}
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
   Run Keyword If  "переможця" in "${TEST_NAME}"  Run Keywords
-  ...    Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  ...    Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   ...    AND  Дочекатися І Клікнути  xpath=//*[@class="bidclaims"]/descendant::a[contains(@href,"tender/qualification-complaints")]
-  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/complaints")]
+  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/complaints")]
   Wait Until Page Does Not Contain Element  xpath=//*[@tid="items.description"]
   Wait Until Keyword Succeeds  5 x  60s  Run Keywords
   ...  Reload Page
@@ -738,16 +738,16 @@ Login
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${doc_id}  ${field_name}  ${award_id}=${None}
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
   Run Keyword If  "переможця" in "${TEST_NAME}"  Run Keywords
-  ...    Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  ...    Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   ...    AND  Дочекатися І Клікнути  xpath=//*[@class="bidclaims"]/descendant::a[contains(@href,"tender/qualification-complaints")]
-  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/complaints")]
+  ...  ELSE  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/complaints")]
   ${value}=  utender.Отримати інформацію із документа  ${username}  ${tender_uaid}  ${doc_id}  ${field_name}
   [Return]  ${value}
 
 Отримати документ до скарги
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${doc_id}  ${award_id}=${None}
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href, "/complaints")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href, "/complaints")]
   ${value}=  utender.Отримати документ   ${username}  ${tender_uaid}  ${doc_id}
   [Return]  ${value}
 
@@ -779,7 +779,7 @@ Login
   ${internal_id}=  Get Text  xpath=//div[text()="ID"]/following-sibling::div/span
   ${index}=  Set Variable  ${field_name[15]}
   ${bid_phone}=  get_bid_phone  ${internal_id}  ${index}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/euprequalification")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/euprequalification")]
   Capture Page Screenshot
   ${value}=  Get Text  xpath=//*[contains(text(),"${bid_phone}")]/ancestor::tr/descendant::*[@tid="qualifications.status"]
   [Return]  ${value}
@@ -787,7 +787,7 @@ Login
 Отримати інформацію із аварду
   [Arguments]  ${username}  ${tender_uaid}  ${field_name}
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   Capture Page Screenshot
   Run Keyword If  '${field_name}' == 'awards[0].documents[0].title'  Клікнути і Дочекатися Елемента  xpath=//button[contains(@id,"modal-qualification")]  xpath=//div[@class="modal-dialog "]
   ...  ELSE IF  'suppliers' in '${field_name}'  Клікнути і Дочекатися Елемента   xpath=//button[@class="modal-open-company"]  xpath=//div[@class="modal-dialog "]
@@ -806,7 +806,7 @@ Login
 Отримати статус контракта
   [Arguments]  ${username}  ${tender_uaid}
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
-  ${status}=  Run Keyword And Return Status  Page Should Contain Element  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/protokol")]
+  ${status}=  Run Keyword And Return Status  Page Should Contain Element  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/protokol")]
   ${value}=  Set Variable If  ${status}  active  pending
   [Return]  ${value}
 
@@ -906,14 +906,14 @@ Login
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
   ${internal_id}=  Get Text  xpath=//div[text()="ID"]/following-sibling::div/span
   ${bid_phone}=  get_bid_phone  ${internal_id}  ${qualification_num}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/euprequalification")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/euprequalification")]
   Choose File  xpath=//*[contains(text(),"${bid_phone}")]/ancestor::tr/following-sibling::tr[1]/descendant::input[@name="FileUpload[file]"]  ${document}
   Capture Page Screenshot
 
 Завантажити документ рішення кваліфікаційної комісії
   [Arguments]  ${username}  ${document}  ${tender_uaid}  ${award_num}
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   Choose File  xpath=(//input[@name="FileUpload[file]"])[1]  ${document}
   Дочекатися І Клікнути  xpath=//input[contains(@id,"qualified")]/..
   Дочекатися І Клікнути  xpath=//input[contains(@id,"eligible")]/..
@@ -929,7 +929,7 @@ Login
   ${document}=  get_upload_file_path
   ${internal_id}=  Get Text  xpath=//div[text()="ID"]/following-sibling::div/span
   ${bid_phone}=  get_bid_phone  ${internal_id}  ${qualification_num}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/euprequalification")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/euprequalification")]
   Дочекатися І Клікнути  xpath=//*[contains(text(),"${bid_phone}")]/ancestor::tr/following-sibling::tr[1]/descendant::input[contains(@id,"qualified")]/..
   Дочекатися І Клікнути  xpath=//*[contains(text(),"${bid_phone}")]/ancestor::tr/following-sibling::tr[1]/descendant::input[contains(@id,"eligible")]/..
   Choose File  xpath=//*[contains(text(),"${bid_phone}")]/ancestor::tr/following-sibling::tr[1]/descendant::input[@name="FileUpload[file]"]  ${document}
@@ -947,7 +947,7 @@ Login
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
   ${internal_id}=  Get Text  xpath=//div[text()="ID"]/following-sibling::div/span
   ${bid_phone}=  get_bid_phone  ${internal_id}  ${qualification_num}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/euprequalification")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/euprequalification")]
   Wait And Select From List By Value  xpath=//*[contains(text(),"${bid_phone}")]/ancestor::tr/following-sibling::tr[1]/descendant::select[@class="choose_prequalification"]  unsuccessful
   Дочекатися І Клікнути  xpath=//*[contains(text(),"${bid_phone}")]/ancestor::tr/following-sibling::tr[1]/descendant::div[@id="qualifications-cause"]/label[1]
   Choose File  xpath=//*[contains(text(),"${bid_phone}")]/ancestor::tr/following-sibling::tr[1]/descendant::input[@name="FileUpload[file]"]  ${document}
@@ -967,7 +967,7 @@ Login
 Затвердити остаточне рішення кваліфікації
   [Arguments]  ${username}  ${tender_uaid}
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/euprequalification")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/euprequalification")]
   Дочекатися І Клікнути  xpath=//button[@name="prequalification_next_status"]
   Wait Until Page Contains  Оскарження прекваліфікації
 
@@ -975,7 +975,7 @@ Login
   [Arguments]  ${username}  ${tender_uaid}  ${contract_num}
   ${document}=  get_upload_file_path
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
-  Дочекатися І Клікнути  xpath=//div[@class="nav_block"]/descendant::a[contains(@href,"tender/award")]
+  Дочекатися І Клікнути  xpath=//div[@class="mk-slide-panel"]/descendant::a[contains(@href,"tender/award")]
   Wait Until Keyword Succeeds  5 x  0.5 s  Дочекатися І Клікнути  xpath=//button[text()="Контракт"]
   Capture Page Screenshot
   Wait Until Element Is Visible  xpath=//*[text()="Додати документ"]
