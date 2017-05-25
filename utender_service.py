@@ -31,7 +31,7 @@ def convert_string_from_dict_utender(string):
         u"False": u"0",
         u"Відкриті торги": u"aboveThresholdUA",
         u"Відкриті торги з публікацією англ. мовою": u"aboveThresholdEU",
-        u'Код ДК 021-2015 (CPV)': u'CPV',
+        u'Код ДК 021-2015 (CPV)': u'ДК021',
         u'Код ДК (ДК003)': u'ДК003',
         u'Код ДК (ДК018)': u'ДК018',
         u'з урахуванням ПДВ': True,
@@ -68,26 +68,28 @@ def adapt_procuringEntity(role_name, tender_data):
         if tender_data['data'].has_key('procurementMethodType'):
             if "above" in tender_data['data']['procurementMethodType']:
                 tender_data['data']['tenderPeriod']['startDate'] = subtract_min_from_date(tender_data['data']['tenderPeriod']['startDate'], 1)
+    tender_data = adapt_item_data(tender_data)
     return tender_data
 
 
-def adapt_delivery_data(tender_data):
+def adapt_item_data(tender_data):
     for index in range(len(tender_data['data']['items'])):
-        value = tender_data['data']['items'][index]['deliveryAddress']['region']
-        if value == u"місто Київ":
-            tender_data['data']['items'][index]['deliveryAddress']['region'] = u"Київ"
+        if tender_data['data']['items'][index]['classification']['scheme'] == 'CPV':
+            tender_data['data']['items'][index]['classification']['scheme'] = u'ДК021'
     return tender_data
 
 
 def adapt_view_data(value, field_name):
-    if 'value.amount' in field_name:
-        value = float(value.split(' ')[0])
+    if 'value.amount' in field_name and 'award' in field_name:
+        value = float(value)
+    elif 'value.amount' in field_name:
+        value = float("".join(value.split(" ")[:-4]).replace(",", "."))
     elif 'currency' in field_name:
-        value = value.split(' ')[1]
+        value = value.split(' ')[-4]
     elif 'valueAddedTaxIncluded' in field_name:
-        value = ' '.join(value.split(' ')[2:])
+        value = ' '.join(value.split(' ')[-3:])
     elif 'minimalStep.amount' in field_name:
-        value = float(value.split(' ')[0])
+        value = float("".join(value.split(" ")[:-4]).replace(",", "."))
     elif 'unit.name' in field_name:
         value = value.split(' ')[1]
     elif 'quantity' in field_name:

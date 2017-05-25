@@ -321,7 +321,7 @@ Login
   [Arguments]  ${username}  ${tender_uaid}  ${feature}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Дочекатися І Клікнути  xpath=//a[contains(text(),'Редагувати')]
-  #Sleep  3
+  Sleep  3
   Дочекатися І Клікнути   xpath=(//div[@class="features_wrapper"]/descendant::button[contains(text(), "Додати показник")])[last()]
   Додати показник   ${feature}  ${EMPTY}
   Дочекатися І Клікнути  xpath=//button[contains(@class,'btn_submit_form')]
@@ -397,7 +397,7 @@ Login
   [Arguments]  ${username}  ${tender_uaid}  ${lot_id}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Дочекатися І Клікнути  xpath=//a[contains(text(),'Редагувати')]
-  #Sleep  3
+  Sleep  3
   Дочекатися І Клікнути  xpath=//*[contains(@value, "${lot_id}")]/ancestor::div[@class="lot"]/descendant::button[contains(@class,"delete_lot")]
   Confirm Action
   Дочекатися І Клікнути  xpath=//button[contains(@class,'btn_submit_form')]
@@ -417,7 +417,7 @@ Login
   [Arguments]  ${username}  ${tender_uaid}  ${feature_id}
   utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Дочекатися І Клікнути  xpath=//a[contains(text(),'Редагувати')]
-  #Sleep  3
+  Sleep  3
   Дочекатися І Клікнути  xpath=//*[contains(@value, "${feature_id}")]/ancestor::div[@class="feature grey"]/descendant::button[contains(@class,"delete_feature")]
   Confirm Action
   Дочекатися І Клікнути  xpath=//button[contains(@class,'btn_submit_form')]
@@ -640,7 +640,8 @@ Login
   ${red}=  Evaluate  "\\033[1;31m"
   capture page screenshot
   ${status_item_block}=  Run Keyword And Return Status  Element Should Not Be Visible  xpath=//*[@tid="items.description"]
-  Run Keyword If  '${field_name}' == 'status'  Дочекатися І Клікнути   xpath=//a[text()='Інформація про закупівлю']
+  Run Keyword If  '${field_name}' == 'status' and ${status_item_block}   Дочекатися І Клікнути   xpath=//a[text()='Інформація про закупівлю']
+  ...  ELSE  Reload Page
   Run Keyword If  '${field_name}' == 'qualificationPeriod.endDate'  Wait Until Keyword Succeeds  10 x  60 s  Run Keywords
   ...  utender.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ...  AND  Page Should Contain Element  xpath=//*[@tid="qualificationPeriod.endDate"]
@@ -821,7 +822,7 @@ Login
   ${selfqualified_status}=  Run Keyword And Return Status  Dictionary Should Contain Key  ${bid.data}  selfQualified
   ${lots_status}=  Run Keyword And Return Status  Dictionary Should Contain Key  ${bid.data}  lotValues
   utender.Пошук тендера по ідентифікатору   ${username}  ${tender_uaid}
-  #Sleep  2
+  Sleep  2
   Run Keyword If  ${lots_status}  Ввести пропозицію для лотової зкупівлі  ${bid}
   ...  ELSE  ConvToStr And Input Text  name=Bid[value][amount]  ${bid.data.value.amount}
   Run Keyword If  ${meat} > 0  Вибрати нецінові показники в пропозиції  ${bid}
@@ -1071,7 +1072,7 @@ Wait And Select From List By Label
   Wait Until Page Contains  Накласти ЕЦП
   Дочекатися І Клікнути  xpath=//*[contains(text(),"Накласти ЕЦП")]
   Capture Page Screenshot
-  Wait Until Element Is Visible  id=CAsServersSelect  60
+  Wait Until Keyword Succeeds  10 x  10 s  Element Should Be Visible  id=CAsServersSelect
   Capture Page Screenshot
   ${status}=  Run Keyword And Return Status  Page Should Contain  Оберіть файл з особистим ключем (зазвичай з ім'ям Key-6.dat) та вкажіть пароль захисту
   Run Keyword If  ${status}  Run Keywords
